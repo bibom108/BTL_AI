@@ -1,1 +1,1 @@
-# BTL_AI
+# Intro to AI assignment
