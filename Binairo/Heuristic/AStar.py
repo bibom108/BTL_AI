@@ -111,6 +111,12 @@ class State:
                             res.arr[row][col] = '1'
                         else:
                             res.arr[row][col] = '0'
+                    elif (col-1 >= 0 and col+1 < self.N) and self.arr[row][col-1] == self.arr[row][col+1] != 'N':
+                        res_empty_cell -= 1
+                        if self.arr[row][col-1] == '0':
+                            res.arr[row][col] = '1'
+                        else:
+                            res.arr[row][col] = '0'
                     elif row-2 >= 0 and self.arr[row-1][col] == self.arr[row-2][col] != 'N':
                         res_empty_cell -= 1
                         if self.arr[row-1][col] == '0':
@@ -123,6 +129,12 @@ class State:
                             res.arr[row][col] = '1'
                         else:
                             res.arr[row][col] = '0'
+                    elif (row-1 >= 0 and row+1 < self.N) and self.arr[row-1][col] == self.arr[row+1][col] != 'N':
+                        res_empty_cell -= 1
+                        if self.arr[row-1][col] == '0':
+                            res.arr[row][col] = '1'
+                        else:
+                            res.arr[row][col] = '0'                    
         if res_empty_cell != cur_empty_cell and res.is_valid():
             result.append([res_empty_cell, res])
         else:
