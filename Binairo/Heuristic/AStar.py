@@ -85,11 +85,16 @@ class State:
             res += self.get_row(row).count("N")
         return res
 
-    def display(self):
-        print("")
+    def display(self, printStep):
+        global outputfile, cnt
+        if (printStep):
+            outputfile.write("Step " + str(cnt) + ":" + "\n")
         for row in range(self.N):
-            print(self.get_row(row))
-        print("")
+            outputfile.write(self.get_row(row))
+            outputfile.write("\n")
+        outputfile.write("\n")
+        if (printStep):
+            cnt += 1
 
     def produce(self):
         result = []
@@ -164,6 +169,7 @@ class Solver():
             tmp = self.q.get()
             prior = tmp.priority
             cur = tmp.item
+            cur.display(True)
             self.visited.add(str(cur))
 
             for x in cur.produce():
@@ -172,10 +178,12 @@ class Solver():
 
         return cur
 
+outputfile = open("output.txt", "w")
+cnt = 0
 state = State("input.txt")
 solver = Solver(state)
 start = time.time()
 res = solver.solver()
 end = time.time()
-res.display()
+res.display(False)
 print('Solved in {:.04f} seconds'.format(end - start))

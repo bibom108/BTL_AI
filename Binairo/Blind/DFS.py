@@ -1,8 +1,10 @@
 import time
 
 class BinairoDFS:
-    def __init__(self, filename):
+    def __init__(self, filename, outname):
         arr = []
+        self.outputfile = open(outname, "w")
+        self.cnt = 0
         f = open(filename, "r")
         for row in f:
             tmp = [(ele) for ele in row if ele != '\n']
@@ -59,13 +61,18 @@ class BinairoDFS:
                     return True,row,col
         return False,-1,-1
 
-    def display(self):
-        print("")
+    def display(self, printStep):
+        if (printStep):
+            self.outputfile.write("Step " + str(self.cnt) + ":" + "\n")
         for row in range(self.N):
-            print(self.get_row(row))
-        print("")
+            self.outputfile.write(self.get_row(row))
+            self.outputfile.write("\n")
+        self.outputfile.write("\n")
+        if (printStep):
+            self.cnt += 1
     
     def solver(self):
+        self.display(True)
         ret, row, col = self.findNextPlace()
         if ret == False:
             return True
@@ -79,9 +86,9 @@ class BinairoDFS:
 
         return False
 
-binairo = BinairoDFS("input.txt")
+binairo = BinairoDFS("input.txt", "output.txt")
 start = time.time()
 binairo.solver()
 end = time.time()
-binairo.display()
+binairo.display(False)
 print('Solved in {:.04f} seconds'.format(end - start))
