@@ -1,4 +1,5 @@
 import time
+import tracemalloc
 
 class BinairoDFS:
     def __init__(self, filename, outname):
@@ -86,9 +87,13 @@ class BinairoDFS:
 
         return False
 
+tracemalloc.start()
 binairo = BinairoDFS("input.txt", "output.txt")
 start = time.time()
 binairo.solver()
 end = time.time()
 binairo.display(False)
+mem = tracemalloc.get_traced_memory()[1]
+print('Memory used {} bytes'.format(mem))
+tracemalloc.stop()
 print('Solved in {:.04f} seconds'.format(end - start))

@@ -1,6 +1,7 @@
 from copy import deepcopy
 from queue import PriorityQueue
 import time
+import tracemalloc
 
 class Prioritize:
     def __init__(self, priority, item):
@@ -178,6 +179,8 @@ class Solver():
 
         return cur
 
+
+tracemalloc.start()
 outputfile = open("output.txt", "w")
 cnt = 0
 state = State("input.txt")
@@ -186,4 +189,7 @@ start = time.time()
 res = solver.solver()
 end = time.time()
 res.display(False)
+mem = tracemalloc.get_traced_memory()[1]
+print('Memory used {} bytes'.format(mem))
+tracemalloc.stop()
 print('Solved in {:.04f} seconds'.format(end - start))
