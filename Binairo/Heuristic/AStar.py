@@ -140,7 +140,11 @@ class State:
                         if self.arr[row-1][col] == '0':
                             res.arr[row][col] = '1'
                         else:
-                            res.arr[row][col] = '0'                    
+                            res.arr[row][col] = '0'    
+                if res_empty_cell != cur_empty_cell and res.is_valid():
+                    break   
+            if res_empty_cell != cur_empty_cell and res.is_valid():
+                break          
         if res_empty_cell != cur_empty_cell and res.is_valid():
             result.append([res_empty_cell, res])
         else:

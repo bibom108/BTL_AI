@@ -5,7 +5,7 @@ class BinairoDFS:
     def __init__(self, filename, outname):
         arr = []
         self.outputfile = open(outname, "w")
-        self.cnt = 0
+        self.cnt = 1
         f = open(filename, "r")
         for row in f:
             tmp = [(ele) for ele in row if ele != '\n']
@@ -73,13 +73,13 @@ class BinairoDFS:
             self.cnt += 1
     
     def solver(self):
-        self.display(True)
         ret, row, col = self.findNextPlace()
         if ret == False:
             return True
             
         for num in range(0, 2):
             self.arr[row][col] = str(num)
+            self.display(True)
             if self.is_valid():
                 if self.solver():
                     return True
