@@ -1,6 +1,6 @@
 import timeit
-import guppy
-from guppy import hpy
+# import guppy
+# from guppy import hpy
 
 
 # Hàm in mảng
@@ -8,8 +8,29 @@ def print_grid(arr):
     print('solving...')
     for i in range(9):
         for j in range(9):
-            print(arr[i][j], ',', end=''),
+            if(j == 0):
+                print('|', arr[i][j], '| ', end='')
+            else: print(arr[i][j], '| ', end='')
         print('\n')
+
+    with open('outputDFS.txt', 'a') as f:
+        f.write('solving...\n')
+        for i in range(9):
+            if(i%3 == 0 and i):
+                for j in range(8):
+                    f.write('=====')
+                f.write('\n')
+            for j in range(9):
+                if(j == 0):
+                    f.write('| ')
+                elif(j%3 == 0):
+                    f.write('| ')
+                else:
+                    f.write(' ')
+                f.write(str(arr[i][j]))
+                f.write(' |')
+            f.write('\n')
+
 
         
 # Hàm tìm vị trí còn trống trong mảng, nếu có vị trí trống thì vị trí đó được gán lần lượt chỉ mục row, col cho mảng l, nếu không còn 
@@ -63,6 +84,9 @@ def solve_sudoku(arr):
     # Gán value đã ghi được ở mảng l vào cho 2 biến row, col
     row = l[0]
     col = l[1]
+
+    # in ra từng bước
+    print_grid(arr)   
     
     # xem xét điền số từ 1 tới 9
     for num in range(1, 10):
@@ -80,9 +104,7 @@ def solve_sudoku(arr):
 
             # nếu mà không thành công, trả lại ? cho vị trí đó, và thử số khác
             
-            arr[row][col] = '?'
-    # in ra từng bước
-    print_grid(arr)     
+            arr[row][col] = '?'  
     #return false nếu thoát vòng lặp for mà không thành công, kích hoạt quay lui	
     return False
 
@@ -116,9 +138,9 @@ def main():
     print(end-start)
     
     # đo bộ nhớ
-    heap = hpy()
-    heap_recursion_method = heap.heap()
-    print("Heap Size : ", heap_recursion_method.size, " bytes\n")
+    # heap = hpy()
+    # heap_recursion_method = heap.heap()
+    # print("Heap Size : ", heap_recursion_method.size, " bytes\n")
 
 
 main()
