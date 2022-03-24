@@ -2,10 +2,13 @@ import timeit
 # import guppy
 # from guppy import hpy
 
+counter = 0
 
 # Hàm in mảng
 def print_grid(arr):
-    print('solving...')
+    global counter 
+    counter = counter + 1
+    print('Step', counter)
     for i in range(9):
         for j in range(9):
             if(j == 0):
@@ -14,7 +17,7 @@ def print_grid(arr):
         print('\n')
 
     with open('outputDFS.txt', 'a') as f:
-        f.write('solving...\n')
+        f.write('Step '+str(counter)+'\n')
         for i in range(9):
             if(i%3 == 0 and i):
                 for j in range(8):
@@ -68,7 +71,27 @@ def used_in_box(arr, row, col, num):
 
 # Hàm check number có dùng được ở vị trí đó không, nó trả về boolean, check number phải không trùng trong hàng, không trùng trong cột, không trùng trong box 3x3
 def check_location_is_safe(arr, row, col, num):
-    return not used_in_row(arr, row, num) and not used_in_col(arr, col, num) and not used_in_box(arr, row - row % 3, col - col % 3, num)
+    violationInRow = used_in_row(arr, row, num)
+    violationInCol = used_in_col(arr, col, num)
+    violationInBox = used_in_box(arr, row - row % 3, col - col % 3, num)
+    if(violationInRow):
+        with open('outputDFS.txt', 'a', encoding='utf-8') as f:
+            f.write(str(num))
+            f.write(' vi phạm luật trùng trên cùng 1 hàng\n')
+    elif(violationInCol):
+        with open('outputDFS.txt', 'a', encoding='utf-8') as f:
+            f.write(str(num))
+            f.write(' vi phạm luật trùng trên cùng 1 cột\n')
+    elif(violationInBox):
+        with open('outputDFS.txt', 'a', encoding='utf-8') as f:
+            f.write(str(num))
+            f.write(' vi phạm luật trùng trong 1 box 3x3\n')
+    else:
+        with open('outputDFS.txt', 'a', encoding='utf-8') as f:
+            f.write('Không vi phạm luật nên chọn ')
+            f.write(str(num))
+            f.write('\n')
+    return not violationInRow and not violationInCol and not violationInBox
 
 
 
