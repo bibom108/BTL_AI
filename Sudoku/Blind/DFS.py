@@ -1,6 +1,6 @@
 import timeit
-# import guppy
-# from guppy import hpy
+import guppy
+from guppy import hpy
 
 counter = 0
 
@@ -8,13 +8,13 @@ counter = 0
 def print_grid(arr):
     global counter 
     counter = counter + 1
-    print('Step', counter)
-    for i in range(9):
-        for j in range(9):
-            if(j == 0):
-                print('|', arr[i][j], '| ', end='')
-            else: print(arr[i][j], '| ', end='')
-        print('\n')
+    # print('Step', counter)
+    # for i in range(9):
+    #     for j in range(9):
+    #         if(j == 0):
+    #             print('|', arr[i][j], '| ', end='')
+    #         else: print(arr[i][j], '| ', end='')
+    #     print('\n')
 
     with open('outputDFS.txt', 'a') as f:
         f.write('Step '+str(counter)+'\n')
@@ -161,9 +161,9 @@ def main():
     print(end-start)
     
     # đo bộ nhớ
-    # heap = hpy()
-    # heap_recursion_method = heap.heap()
-    # print("Heap Size : ", heap_recursion_method.size, " bytes\n")
+    heap = hpy()
+    heap_recursion_method = heap.heap()
+    print("Heap Size : ", heap_recursion_method.size, " bytes\n")
 
 
 main()
