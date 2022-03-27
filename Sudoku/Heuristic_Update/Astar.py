@@ -116,7 +116,7 @@ class State:
             for col in range(self.N):
                 if(self.arr[row][col] == '?'):
                     # Tính độ ưu tiên dựa trên số ô còn trống + số khả năng có thể của ô trống đó.
-                    priority = self.countEmpty() + self.countPossibleWays(row, col)
+                    priority = self.countEmpty() - 1 + self.countPossibleWays(row, col)
                     for i in range(1,10):
                         if self.check_location_is_safe(row, col, str(i)):
                             # print(row, col, i)
@@ -134,7 +134,7 @@ class Solver():
     def __init__(self, state):
         self.initial = state
         self.q = PriorityQueue()
-        self.visited = set()
+        # self.visited = set()
         
     def solver(self):
         cur = self.initial
@@ -142,16 +142,17 @@ class Solver():
 
         while cur.countEmpty() != 0 and not self.q.empty():
             tmp = self.q.get()
-            
+            with open('outputAStar.txt', 'a') as f:
+                f.write('Priotity '+ str(tmp.priority) + '\n')
             cur = tmp.item
 
             cur.print_grid()
 
-            self.visited.add(str(cur))
+            # self.visited.add(str(cur))
 
             for x in cur.produce():
-                if str(x[1]) not in self.visited:
-                    self.q.put(Prioritize(x[0],x[1]))
+                # if str(x[1]) not in self.visited:
+                self.q.put(Prioritize(x[0], x[1]))
         if(cur.countEmpty() != 0):
             return NULL
         return cur
