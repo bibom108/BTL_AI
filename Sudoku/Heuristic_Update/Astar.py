@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from copy import deepcopy
 from queue import PriorityQueue
 import time
@@ -149,9 +150,10 @@ class Solver():
             self.visited.add(str(cur))
 
             for x in cur.produce():
-                if str(x) not in self.visited:
+                if str(x[1]) not in self.visited:
                     self.q.put(Prioritize(x[0],x[1]))
-
+        if(cur.countEmpty() != 0):
+            return NULL
         return cur
 
 # Hàm main
@@ -163,7 +165,11 @@ def main():
     solver = Solver(state)
     #đo thời gian
     start = time.time()
-    solver.solver()
+    res = solver.solver()
+    if(res == NULL):
+        print("Không có lời giải!")
+    else:
+        print("Tìm thấy lời giải, xem trong file OutputAStar.txt")
     end = time.time()
     
     # đo bộ nhớ
