@@ -178,7 +178,7 @@ class Solver():
             self.visited.add(str(cur))
 
             for x in cur.produce():
-                if str(x) not in self.visited:
+                if str(x[1]) not in self.visited:
                     self.q.put(Prioritize(x[0], x[1]))
 
         return cur

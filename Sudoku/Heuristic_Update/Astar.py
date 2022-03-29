@@ -3,8 +3,6 @@ from copy import deepcopy
 from queue import PriorityQueue
 import time
 import tracemalloc
-# import guppy
-# from guppy import hpy
 
 counter = 0
 matrix = 9

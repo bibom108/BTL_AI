@@ -1,6 +1,5 @@
-import timeit
-import guppy
-from guppy import hpy
+import tracemalloc
+import time
 
 counter = 0
 
@@ -150,20 +149,17 @@ def main():
         [9, '?', 1,3, '?','?', '?', '?', '?']]
 
     #đo thời gian
-    start = timeit.default_timer()
-  
+    start = time.time()
+    tracemalloc.start()
     if(solve_sudoku(grid)):
         print_grid(grid)
     else:
         print("No solution exists")
 
-    end = timeit.default_timer()
-    print(end-start)
-    
-    # đo bộ nhớ
-    heap = hpy()
-    heap_recursion_method = heap.heap()
-    print("Heap Size : ", heap_recursion_method.size, " bytes\n")
+    end = time.time()
+    mem = tracemalloc.get_traced_memory()[1]
 
-
+    print('Memory used {} bytes'.format(mem))
+    tracemalloc.stop()
+    print('Solved in {:.04f} seconds'.format(end - start))
 main()
