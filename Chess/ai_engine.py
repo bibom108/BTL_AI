@@ -14,9 +14,9 @@ class chess_ai:
                 return 100
         elif not maximizing_player:
             if csc == 1:
-                return 5000000
-            elif csc == 0:
                 return -5000000
+            elif csc == 0:
+                return 5000000
             elif csc == 2:
                 return 100
 
@@ -81,9 +81,9 @@ class chess_ai:
                 return 100
         elif not maximizing_player:
             if csc == 0:
-                return 5000000
-            elif csc == 1:
                 return -5000000
+            elif csc == 1:
+                return 5000000
             elif csc == 2:
                 return 100
 
