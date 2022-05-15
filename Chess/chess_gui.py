@@ -3,6 +3,7 @@ import chess_engine
 import pygame as py
 import ai_engine_better
 import ai_engine
+import random_engine
 from enums import Player
 
 WIDTH = HEIGHT = 512  
@@ -62,7 +63,7 @@ def main():
 
     while True:
         try:
-            number_of_players = input("How many players (0 or 1)?\n")
+            number_of_players = input("Select play mode (2: random // 0: 2 bot // 1: 1 bot)?\n")
             if int(number_of_players) == 1:
                 number_of_players = 1
                 while True:
@@ -74,6 +75,15 @@ def main():
                 break
             elif int(number_of_players) == 0:
                 number_of_players = 0
+                while True:
+                    setting = input("What color do you want PRO play (w or b)?\n")
+                    if setting is "w" or setting is "b":
+                        break
+                    else:
+                        print("Enter w or b.\n")
+                break
+            elif int(number_of_players) == 2:
+                number_of_players = 2
                 while True:
                     setting = input("What color do you want PRO play (w or b)?\n")
                     if setting is "w" or setting is "b":
@@ -98,6 +108,7 @@ def main():
 
     pro = ai_engine_better.chess_ai()
     noob = ai_engine.chess_ai()
+    rand = random_engine.chess_random()
     game_state = chess_engine.game_state()
 
     if setting is 'b' and number_of_players == 1:
@@ -110,7 +121,7 @@ def main():
                 running = False
             elif e.type == py.MOUSEBUTTONDOWN:
                 if not game_over:
-                    if number_of_players == 0:
+                    if number_of_players == 0 or number_of_players == 2:
                         if not game_over:
                             if setting is 'w':
                                 ai_move = pro.minimax_black(game_state, 2, -100000, 100000, True, Player.PLAYER_1)
@@ -133,11 +144,20 @@ def main():
                                 clock.tick(MAX_FPS)
                                 py.display.flip()
                                 
-                                ai_move = noob.minimax_white(game_state, 2, -100000, 100000, True, Player.PLAYER_2)
-                                game_state.move_piece(ai_move[0], ai_move[1], True)
+                                if number_of_players == 2:
+                                    ai_move = rand.get_move(game_state, Player.PLAYER_2)
+                                    game_state.move_piece(ai_move[0], ai_move[1], True)
+                                else:
+                                    ai_move = noob.minimax_white(game_state, 2, -100000, 100000, True, Player.PLAYER_2)
+                                    game_state.move_piece(ai_move[0], ai_move[1], True)
                             elif setting is 'b':
-                                ai_move = noob.minimax_black(game_state, 2, -100000, 100000, True, Player.PLAYER_1)
-                                game_state.move_piece(ai_move[0], ai_move[1], True)
+                                if number_of_players == 2:
+                                    ai_move = rand.get_move(game_state, Player.PLAYER_1)
+                                    game_state.move_piece(ai_move[0], ai_move[1], True)
+                                else:
+                                    ai_move = noob.minimax_black(game_state, 2, -100000, 100000, True, Player.PLAYER_1)
+                                    game_state.move_piece(ai_move[0], ai_move[1], True)
+
                                 draw_game_state(screen, game_state, valid_moves, square_selected)
                                 endgame = game_state.checkmate_stalemate_checker()
                                 if endgame == 0:
