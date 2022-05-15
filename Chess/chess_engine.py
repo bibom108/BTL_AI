@@ -112,7 +112,9 @@ class game_state:
 
         current_row = starting_square[0]
         current_col = starting_square[1]
-
+        # moving_piece = self.get_piece(current_row, current_col)
+        # initial_valid_piece_moves = moving_piece.get_valid_piece_moves(self)
+        # return initial_valid_piece_moves
         if self.is_valid_piece(current_row, current_col):
             valid_moves = []
             moving_piece = self.get_piece(current_row, current_col)
@@ -517,7 +519,7 @@ class game_state:
 
             return undoing_move
         else:
-            print("Back to the beginning!")
+            return
 
     def whose_turn(self):
         return self.white_turn

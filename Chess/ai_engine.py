@@ -1,6 +1,6 @@
 import chess_engine
 from enums import Player
-
+import random
 
 class chess_ai:
     def minimax_white(self, game_state, depth, alpha, beta, maximizing_player, player_color):
@@ -26,6 +26,7 @@ class chess_ai:
         if maximizing_player:
             max_evaluation = -10000000
             all_possible_moves = game_state.get_all_legal_moves("black")
+            res = []
             for move_pair in all_possible_moves:
                 game_state.move_piece(move_pair[0], move_pair[1], True)
                 evaluation = self.minimax_white(game_state, depth - 1, alpha, beta, False, "white")
@@ -34,16 +35,21 @@ class chess_ai:
                 if max_evaluation < evaluation:
                     max_evaluation = evaluation
                     best_possible_move = move_pair
+                    res.clear()
+                    res.append(move_pair)
+                elif max_evaluation == evaluation:
+                    res.append(move_pair)
                 alpha = max(alpha, evaluation)
                 if beta <= alpha:
                     break
             if depth == 2:
-                return best_possible_move
+                return random.choice(res)
             else:
                 return max_evaluation
         else:
             min_evaluation = 10000000
             all_possible_moves = game_state.get_all_legal_moves("white")
+            res = []
             for move_pair in all_possible_moves:
                 game_state.move_piece(move_pair[0], move_pair[1], True)
                 evaluation = self.minimax_white(game_state, depth - 1, alpha, beta, True, "black")
@@ -52,11 +58,15 @@ class chess_ai:
                 if min_evaluation > evaluation:
                     min_evaluation = evaluation
                     best_possible_move = move_pair
+                    res.clear()
+                    res.append(move_pair)
+                elif min_evaluation == evaluation:
+                    res.append(move_pair)
                 beta = min(beta, evaluation)
                 if beta <= alpha:
                     break
             if depth == 2:
-                return best_possible_move
+                return random.choice(res)
             else:
                 return min_evaluation
 
@@ -83,6 +93,7 @@ class chess_ai:
         if maximizing_player:
             max_evaluation = -10000000
             all_possible_moves = game_state.get_all_legal_moves("white")
+            res = []
             for move_pair in all_possible_moves:
                 game_state.move_piece(move_pair[0], move_pair[1], True)
                 evaluation = self.minimax_black(game_state, depth - 1, alpha, beta, False, "black")
@@ -91,16 +102,21 @@ class chess_ai:
                 if max_evaluation < evaluation:
                     max_evaluation = evaluation
                     best_possible_move = move_pair
+                    res.clear()
+                    res.append(move_pair)
+                elif max_evaluation == evaluation:
+                    res.append(move_pair)
                 alpha = max(alpha, evaluation)
                 if beta <= alpha:
                     break
             if depth == 2:
-                return best_possible_move
+                return random.choice(res)
             else:
                 return max_evaluation
         else:
             min_evaluation = 10000000
             all_possible_moves = game_state.get_all_legal_moves("black")
+            res = []
             for move_pair in all_possible_moves:
                 game_state.move_piece(move_pair[0], move_pair[1], True)
                 evaluation = self.minimax_black(game_state, depth - 1, alpha, beta, True, "white")
@@ -109,11 +125,15 @@ class chess_ai:
                 if min_evaluation > evaluation:
                     min_evaluation = evaluation
                     best_possible_move = move_pair
+                    res.clear()
+                    res.append(move_pair)
+                elif min_evaluation == evaluation:
+                    res.append(move_pair)
                 beta = min(beta, evaluation)
                 if beta <= alpha:
                     break
             if depth == 2:
-                return best_possible_move
+                return random.choice(res)
             else:
                 return min_evaluation
 

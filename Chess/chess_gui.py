@@ -59,6 +59,7 @@ def highlight_square(screen, game_state, valid_moves, square_selected):
 
 def main():
     setting = ""
+
     while True:
         try:
             number_of_players = input("How many players (0 or 1)?\n")
@@ -115,12 +116,44 @@ def main():
                                 ai_move = pro.minimax_black(game_state, 2, -100000, 100000, True, Player.PLAYER_1)
                                 game_state.move_piece(ai_move[0], ai_move[1], True)
 
+                                draw_game_state(screen, game_state, valid_moves, square_selected)
+                                endgame = game_state.checkmate_stalemate_checker()
+                                if endgame == 0:
+                                    game_over = True
+                                    draw_text(screen, "Black wins.")
+                                    continue
+                                elif endgame == 1:
+                                    game_over = True
+                                    draw_text(screen, "White wins.")
+                                    continue
+                                elif endgame == 2:
+                                    game_over = True
+                                    draw_text(screen, "Stalemate.")
+                                    continue
+                                clock.tick(MAX_FPS)
+                                py.display.flip()
+                                
                                 ai_move = noob.minimax_white(game_state, 2, -100000, 100000, True, Player.PLAYER_2)
                                 game_state.move_piece(ai_move[0], ai_move[1], True)
                             elif setting is 'b':
                                 ai_move = noob.minimax_black(game_state, 2, -100000, 100000, True, Player.PLAYER_1)
                                 game_state.move_piece(ai_move[0], ai_move[1], True)
-
+                                draw_game_state(screen, game_state, valid_moves, square_selected)
+                                endgame = game_state.checkmate_stalemate_checker()
+                                if endgame == 0:
+                                    game_over = True
+                                    draw_text(screen, "Black wins.")
+                                    continue
+                                elif endgame == 1:
+                                    game_over = True
+                                    draw_text(screen, "White wins.")
+                                    continue
+                                elif endgame == 2:
+                                    game_over = True
+                                    draw_text(screen, "Stalemate.")
+                                    continue
+                                clock.tick(MAX_FPS)
+                                py.display.flip()
                                 ai_move = pro.minimax_white(game_state, 2, -100000, 100000, True, Player.PLAYER_2)
                                 game_state.move_piece(ai_move[0], ai_move[1], True)
                     else:
@@ -146,6 +179,21 @@ def main():
                                 player_clicks = []
                                 valid_moves = []
 
+                                draw_game_state(screen, game_state, valid_moves, square_selected)
+                                endgame = game_state.checkmate_stalemate_checker()
+                                if endgame == 0:
+                                    game_over = True
+                                    draw_text(screen, "Black wins.")
+                                    continue
+                                elif endgame == 1:
+                                    game_over = True
+                                    draw_text(screen, "White wins.")
+                                    continue
+                                elif endgame == 2:
+                                    game_over = True
+                                    draw_text(screen, "Stalemate.")
+                                    continue
+                                
                                 if setting is 'w':
                                     ai_move = pro.minimax_white(game_state, 2, -100000, 100000, True, Player.PLAYER_2)
                                     game_state.move_piece(ai_move[0], ai_move[1], True)
