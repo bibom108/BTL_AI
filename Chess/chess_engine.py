@@ -1,27 +1,25 @@
-
-from chess_pieces import Rook, Knight, Bishop, Queen, King, Pawn
+from Piece import Rook, Knight, Bishop, Queen, King, Pawn
 from enums import Player
-# (row, col)
-#        0      1      2      3      4      5      6      7 
-# 0   [(0,0), (0,1), (0,2), (0,3), (0,4), (0,5), (0,6), (0,7)]
-# 1   [(1,0), (1,1), (1,2), (1,3), (1,4), (1,5), (1,6), (1,7)]
-# 2   [(2,0), (2,1), (2,2), (2,3), (2,4), (2,5), (2,6), (2,7)]
-# 3   [(3,0), (3,1), (3,2), (3,3), (3,4), (3,5), (3,6), (3,7)]
-# 4   [(4,0), (4,1), (4,2), (4,3), (4,4), (4,5), (4,6), (4,7)]
-# 5   [(5,0), (5,1), (5,2), (5,3), (5,4), (5,5), (5,6), (5,7)]
-# 6   [(6,0), (6,1), (6,2), (6,3), (6,4), (6,5), (6,6), (6,7)]
-# 7   [(7,0), (7,1), (7,2), (7,3), (7,4), (7,5), (7,6), (7,7)]
-# '''
+
+'''
+r \ c     0           1           2           3           4           5           6           7 
+0   [(r=0, c=0), (r=0, c=1), (r=0, c=2), (r=0, c=3), (r=0, c=4), (r=0, c=5), (r=0, c=6), (r=0, c=7)]
+1   [(r=1, c=0), (r=1, c=1), (r=1, c=2), (r=1, c=3), (r=1, c=4), (r=1, c=5), (r=1, c=6), (r=1, c=7)]
+2   [(r=2, c=0), (r=2, c=1), (r=2, c=2), (r=2, c=3), (r=2, c=4), (r=2, c=5), (r=2, c=6), (r=2, c=7)]
+3   [(r=3, c=0), (r=3, c=1), (r=3, c=2), (r=3, c=3), (r=3, c=4), (r=3, c=5), (r=3, c=6), (r=3, c=7)]
+4   [(r=4, c=0), (r=4, c=1), (r=4, c=2), (r=4, c=3), (r=4, c=4), (r=4, c=5), (r=4, c=6), (r=4, c=7)]
+5   [(r=5, c=0), (r=5, c=1), (r=5, c=2), (r=5, c=3), (r=5, c=4), (r=5, c=5), (r=5, c=6), (r=5, c=7)]
+6   [(r=6, c=0), (r=6, c=1), (r=6, c=2), (r=6, c=3), (r=6, c=4), (r=6, c=5), (r=6, c=6), (r=6, c=7)]
+7   [(r=7, c=0), (r=7, c=1), (r=7, c=2), (r=7, c=3), (r=7, c=4), (r=7, c=5), (r=7, c=6), (r=7, c=7)]
+'''
+
 
 class game_state:
-    # Initialize 2D array to represent the chess board
     def __init__(self):
-        # The board is a 2D array
-        # TODO: Change to a numpy format later
-        # self.white_captives = []
-        # self.black_captives = []
+        self.white_captives = []
+        self.black_captives = []
         self.move_log = []
-        self.white_turn = False
+        self.white_turn = True
         self.can_en_passant_bool = False
         self._en_passant_previous = (-1, -1)
         self.checkmate = False
@@ -32,10 +30,9 @@ class game_state:
         self._black_king_location = [7, 3]
 
         self.white_king_can_castle = [True, True,
-                                      True]  # Has king not moved, has Rook1(col=0) not moved, has Rook2(col=7) not moved
+                                      True] 
         self.black_king_can_castle = [True, True, True]
 
-        # Initialize White pieces
         white_rook_1 = Rook('r', 0, 0, Player.PLAYER_1)
         white_rook_2 = Rook('r', 0, 7, Player.PLAYER_1)
         white_knight_1 = Knight('n', 0, 1, Player.PLAYER_1)
@@ -54,7 +51,8 @@ class game_state:
         white_pawn_8 = Pawn('p', 1, 7, Player.PLAYER_1)
         self.white_pieces = [white_rook_1, white_rook_2, white_knight_1, white_knight_2, white_bishop_1, white_bishop_2,
                              white_queen, white_king, white_pawn_1, white_pawn_2, white_pawn_3, white_pawn_4,
-                             white_pawn_5, white_pawn_6, white_pawn_7, white_pawn_8]
+                             white_pawn_5,
+                             white_pawn_6, white_pawn_7, white_pawn_8]
 
         # Initialize Black Pieces
         black_rook_1 = Rook('r', 7, 0, Player.PLAYER_2)
@@ -190,27 +188,16 @@ class game_state:
                 else:
                     for move in initial_valid_piece_moves:
                         valid_moves.append(move)
-            # if not valid_moves:
-            #     if self._is_check:
-            #         self.checkmate = True
-            #     else:
-            #         self.stalemate = True
-            # else:
-            #     self.checkmate = False
-            #     self.stalemate = False
             return valid_moves
         else:
             return None
 
-    # 0 if white lost, 1 if black lost, 2 if stalemate, 3 if not game over
     def checkmate_stalemate_checker(self):
         all_white_moves = self.get_all_legal_moves(Player.PLAYER_1)
         all_black_moves = self.get_all_legal_moves(Player.PLAYER_2)
         if self._is_check and self.whose_turn() and not all_white_moves:
-            print("white lost")
             return 0
         elif self._is_check and not self.whose_turn() and not all_black_moves:
-            print("black lost")
             return 1
         elif not all_white_moves and not all_black_moves:
             return 2
@@ -218,14 +205,6 @@ class game_state:
             return 3
 
     def get_all_legal_moves(self, player):
-        # _all_valid_moves = [[], []]
-        # for row in range(0, 8):
-        #     for col in range(0, 8):
-        #         if self.is_valid_piece(row, col) and self.get_piece(row, col).is_player(player):
-        #             valid_moves = self.get_valid_moves((row, col))
-        #             if valid_moves:
-        #                 _all_valid_moves[0].append((row, col))
-        #                 _all_valid_moves[1].append(valid_moves)
         _all_valid_moves = []
         for row in range(0, 8):
             for col in range(0, 8):
@@ -456,23 +435,94 @@ class game_state:
             else:
                 pass
 
-    # true if white, false if black
+    def undo_move(self):
+        if self.move_log:
+            undoing_move = self.move_log.pop()
+            if undoing_move.castled is True:
+                self.board[undoing_move.starting_square_row][
+                    undoing_move.starting_square_col] = undoing_move.moving_piece
+                self.board[undoing_move.ending_square_row][undoing_move.ending_square_col] = undoing_move.removed_piece
+                self.get_piece(undoing_move.starting_square_row, undoing_move.starting_square_col).change_row_number(
+                    undoing_move.starting_square_row)
+                self.get_piece(undoing_move.starting_square_row, undoing_move.starting_square_col).change_col_number(
+                    undoing_move.starting_square_col)
+
+                self.board[undoing_move.rook_starting_square[0]][
+                    undoing_move.rook_starting_square[1]] = undoing_move.moving_rook
+                self.board[undoing_move.rook_ending_square[0]][undoing_move.rook_ending_square[1]] = Player.EMPTY
+                undoing_move.moving_rook.change_row_number(undoing_move.rook_starting_square[0])
+                undoing_move.moving_rook.change_col_number(undoing_move.rook_starting_square[1])
+                if undoing_move.moving_piece is Player.PLAYER_1:
+                    if undoing_move.rook_starting_square[1] == 0:
+                        self.white_king_can_castle[0] = True
+                        self.white_king_can_castle[1] = True
+                    elif undoing_move.rook_starting_square[1] == 7:
+                        self.white_king_can_castle[0] = True
+                        self.white_king_can_castle[2] = True
+                else:
+                    if undoing_move.rook_starting_square[1] == 0:
+                        self.black_king_can_castle[0] = True
+                        self.black_king_can_castle[1] = True
+                    elif undoing_move.rook_starting_square[1] == 7:
+                        self.black_king_can_castle[0] = True
+                        self.black_king_can_castle[2] = True
+            elif undoing_move.pawn_promoted is True:
+                self.board[undoing_move.starting_square_row][
+                    undoing_move.starting_square_col] = undoing_move.moving_piece
+                self.get_piece(undoing_move.starting_square_row, undoing_move.starting_square_col).change_row_number(
+                    undoing_move.starting_square_row)
+                self.get_piece(undoing_move.starting_square_row, undoing_move.starting_square_col).change_col_number(
+                    undoing_move.starting_square_col)
+
+                self.board[undoing_move.ending_square_row][undoing_move.ending_square_col] = undoing_move.removed_piece
+                if undoing_move.removed_piece != Player.EMPTY:
+                    self.get_piece(undoing_move.ending_square_row, undoing_move.ending_square_col).change_row_number(
+                        undoing_move.ending_square_row)
+                    self.get_piece(undoing_move.ending_square_row, undoing_move.ending_square_col).change_col_number(
+                        undoing_move.ending_square_col)
+            elif undoing_move.en_passaned is True:
+                self.board[undoing_move.starting_square_row][
+                    undoing_move.starting_square_col] = undoing_move.moving_piece
+                self.board[undoing_move.ending_square_row][undoing_move.ending_square_col] = undoing_move.removed_piece
+                self.get_piece(undoing_move.starting_square_row, undoing_move.starting_square_col).change_row_number(
+                    undoing_move.starting_square_row)
+                self.get_piece(undoing_move.starting_square_row, undoing_move.starting_square_col).change_col_number(
+                    undoing_move.starting_square_col)
+
+                self.board[undoing_move.en_passant_eaten_square[0]][
+                    undoing_move.en_passant_eaten_square[1]] = undoing_move.en_passant_eaten_piece
+                self.can_en_passant_bool = True
+            else:
+                self.board[undoing_move.starting_square_row][
+                    undoing_move.starting_square_col] = undoing_move.moving_piece
+                self.get_piece(undoing_move.starting_square_row, undoing_move.starting_square_col).change_row_number(
+                    undoing_move.starting_square_row)
+                self.get_piece(undoing_move.starting_square_row, undoing_move.starting_square_col).change_col_number(
+                    undoing_move.starting_square_col)
+
+                self.board[undoing_move.ending_square_row][undoing_move.ending_square_col] = undoing_move.removed_piece
+                if undoing_move.removed_piece != Player.EMPTY:
+                    self.get_piece(undoing_move.ending_square_row, undoing_move.ending_square_col).change_row_number(
+                        undoing_move.ending_square_row)
+                    self.get_piece(undoing_move.ending_square_row, undoing_move.ending_square_col).change_col_number(
+                        undoing_move.ending_square_col)
+
+            self.white_turn = not self.white_turn
+            # if undoing_move.in_check:
+            #     self._is_check = True
+            if undoing_move.moving_piece.get_name() is 'k' and undoing_move.moving_piece.get_player() is Player.PLAYER_1:
+                self._white_king_location = (undoing_move.starting_square_row, undoing_move.starting_square_col)
+            elif undoing_move.moving_piece.get_name() is 'k' and undoing_move.moving_piece.get_player() is Player.PLAYER_2:
+                self._black_king_location = (undoing_move.starting_square_row, undoing_move.starting_square_col)
+
+            return undoing_move
+        else:
+            print("Back to the beginning!")
+
     def whose_turn(self):
         return self.white_turn
 
-    '''
-    check for immediate check
-    - check 8 directions and 8 knight squares
-    check for pins
-    - whatever blocked from above is a pin
-    
-     - if immediate check, change check value to true
-     - list valid moves to prevent check but not remove pin
-     - if there are no valid moves to prevent check, checkmate
-    '''
-
     def check_for_check(self, king_location, player):
-        # self._is_check = False
         _checks = []
         _pins = []
         _pins_check = []
@@ -485,7 +535,6 @@ class game_state:
         _left = 1
         _right = 1
 
-        # Left of the king
         _possible_pin = ()
         while king_location_col - _left >= 0 and self.get_piece(king_location_row,
                                                                 king_location_col - _left) is not None:
