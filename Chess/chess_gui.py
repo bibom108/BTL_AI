@@ -4,6 +4,7 @@ import pygame as py
 import ai_engine_better
 import ai_engine
 import random_engine
+import ai_engine_ml
 from enums import Player
 
 WIDTH = HEIGHT = 512  
@@ -109,10 +110,11 @@ def main():
     pro = ai_engine_better.chess_ai()
     noob = ai_engine.chess_ai()
     rand = random_engine.chess_random()
+    ml = ai_engine_ml.chess_ai()
     game_state = chess_engine.game_state()
 
     if setting is 'b' and number_of_players == 1:
-        ai_move = pro.minimax_black(game_state, 2, -100000, 100000, True, Player.PLAYER_1)
+        ai_move = ml.minimax_black(game_state, 1, -100000, 100000, True, Player.PLAYER_1)
         game_state.move_piece(ai_move[0], ai_move[1], True)
 
     while running:
@@ -215,10 +217,10 @@ def main():
                                     continue
                                 
                                 if setting is 'w':
-                                    ai_move = pro.minimax_white(game_state, 2, -100000, 100000, True, Player.PLAYER_2)
+                                    ai_move = ml.minimax_white(game_state, 1, -100000, 100000, True, Player.PLAYER_2)
                                     game_state.move_piece(ai_move[0], ai_move[1], True)
                                 elif setting is 'b':
-                                    ai_move = pro.minimax_black(game_state, 2, -100000, 100000, True, Player.PLAYER_1)
+                                    ai_move = ml.minimax_black(game_state, 1, -100000, 100000, True, Player.PLAYER_1)
                                     game_state.move_piece(ai_move[0], ai_move[1], True)
                         else:
                             valid_moves = game_state.get_valid_moves((row, col))
