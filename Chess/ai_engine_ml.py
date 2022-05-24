@@ -4,6 +4,7 @@ import random
 from tensorflow.keras import models
 import numpy
 
+
 class chess_ai:
     model = models.load_model('train/model.h5')
 
@@ -32,7 +33,8 @@ class chess_ai:
             all_possible_moves = game_state.get_all_legal_moves("black")
             for move_pair in all_possible_moves:
                 game_state.move_piece(move_pair[0], move_pair[1], True)
-                evaluation = self.minimax_white(game_state, depth - 1, alpha, beta, False, "white")
+                evaluation = self.minimax_white(
+                    game_state, depth - 1, alpha, beta, False, "white")
                 game_state.undo_move()
                 if max_evaluation < evaluation:
                     max_evaluation = evaluation
@@ -50,7 +52,8 @@ class chess_ai:
             all_possible_moves = game_state.get_all_legal_moves("white")
             for move_pair in all_possible_moves:
                 game_state.move_piece(move_pair[0], move_pair[1], True)
-                evaluation = self.minimax_white(game_state, depth - 1, alpha, beta, True, "black")
+                evaluation = self.minimax_white(
+                    game_state, depth - 1, alpha, beta, True, "black")
                 game_state.undo_move()
 
                 if min_evaluation > evaluation:
@@ -90,7 +93,8 @@ class chess_ai:
             all_possible_moves = game_state.get_all_legal_moves("white")
             for move_pair in all_possible_moves:
                 game_state.move_piece(move_pair[0], move_pair[1], True)
-                evaluation = self.minimax_black(game_state, depth - 1, alpha, beta, False, "black")
+                evaluation = self.minimax_black(
+                    game_state, depth - 1, alpha, beta, False, "black")
                 game_state.undo_move()
 
                 if max_evaluation < evaluation:
@@ -109,7 +113,8 @@ class chess_ai:
             all_possible_moves = game_state.get_all_legal_moves("black")
             for move_pair in all_possible_moves:
                 game_state.move_piece(move_pair[0], move_pair[1], True)
-                evaluation = self.minimax_black(game_state, depth - 1, alpha, beta, True, "white")
+                evaluation = self.minimax_black(
+                    game_state, depth - 1, alpha, beta, True, "white")
                 game_state.undo_move()
 
                 if min_evaluation > evaluation:
